@@ -5,10 +5,9 @@ const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
 
-
 const protect = require("./middleware/authMiddleware.js");
 const errorHandler = require("./utils/errorHandler.js");
-const {generalLimiter, authLimiter} = require("./config/rateLimiter.js")
+const { generalLimiter, authLimiter } = require("./config/rateLimiter.js");
 
 const app = express();
 
@@ -43,6 +42,20 @@ app.use(generalLimiter);
 
 //BODY PARSER
 app.use(express.json());
+
+// ─── HEALTH CHECK ────────────────────────────────────
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "🚀 Task Manager API is running!",
+    version: "v1",
+    endpoints: {
+      register: "POST /api/v1/auth/register",
+      login: "POST /api/v1/auth/login",
+      tasks: "/api/v1/tasks",
+    },
+  });
+});
 
 //routes
 app.use("/api/v1/auth", authLimiter, require("./routes/auth"));
