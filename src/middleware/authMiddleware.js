@@ -23,10 +23,15 @@ const protect = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid or expired token ❌",
-    });
+     if (error.name === "TokenExpiredError") {
+       return res
+         .status(401)
+         .json({
+           success: false,
+           message: "Token expired, please login again",
+         });
+     }
+     return res.status(401).json({ success: false, message: "Invalid token" });
   }
 };
 

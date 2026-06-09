@@ -2,24 +2,25 @@ const express = require("express");
 const router = express.Router();
 const protect = require("../middleware/authMiddleware.js");
 const { createTask, getAllTasks, getOneTask, updateTask, deleteTask } = require("../controllers/taskController.js");
+const { createTaskValidations, updateTaskValidations, taskIDValidations, getAllTaskValidations } = require("../validators/taskValidators.js");
+const validateRequest = require("../middleware/validateRequest.js");
 
 //create task
-router.post('/', protect, createTask);
+router.post('/', protect, createTaskValidations, validateRequest, createTask);
 
-//get all tasks
-
-router.get("/", protect, getAllTasks);
+//get all tasks - no validations needed
+router.get("/", protect, getAllTaskValidations, validateRequest, getAllTasks);
 
 //get one task
 
-router.get("/:id", protect, getOneTask);
+router.get("/:id", protect, taskIDValidations, validateRequest, getOneTask);
 
 //update task
 
-router.put("/:id", protect, updateTask);
+router.put("/:id", protect, updateTaskValidations, validateRequest, updateTask);
 
 //delete task
 
-router.delete("/:id", protect, deleteTask);
+router.delete("/:id", protect, taskIDValidations, validateRequest, deleteTask);
 
 module.exports = router;
