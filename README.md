@@ -30,5 +30,5 @@
 - https://task-manager-api-3l2y.onrender.com
 
 ## Installation
-npm install
-npm start
+- npm install
+- npm start
